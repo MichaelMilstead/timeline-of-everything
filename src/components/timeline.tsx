@@ -54,7 +54,7 @@ export const Timeline = ({
 
   return (
     <div className="relative h-full">
-      {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
+      {title && <h2 className="text-lg mb-4">{title}</h2>}
       <div className="overflow-x-auto h-full min-h-[150px]" ref={timelineRef}>
         <div
           style={{
