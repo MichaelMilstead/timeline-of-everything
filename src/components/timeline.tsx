@@ -3,7 +3,7 @@ import * as React from "react";
 export interface TimelineEvent {
   year: number;
   label: string;
-  description?: string;
+  description: string;
 }
 
 export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -133,6 +133,7 @@ export const TimelineEvents = ({
                 <div className="text-sm font-medium mb-2 whitespace-nowrap">
                   {event.label}
                 </div>
+
                 <div
                   className={`w-3 h-3 bg-primary rounded-full cursor-pointer transition-transform ${
                     isFocused ? "scale-150" : "hover:scale-125"
@@ -140,7 +141,10 @@ export const TimelineEvents = ({
                   onClick={() => onEventClick(event)}
                 />
                 {isFocused && event.description && (
-                  <div className="absolute top-full mt-4 z-10 bg-background border rounded-lg p-3 shadow-lg min-w-[200px] max-w-[300px]">
+                  <div className="fixed mt-4 z-10 bg-background border rounded-lg p-3 shadow-lg min-w-[200px] max-w-[300px]">
+                    <div className="text-sm font-medium mb-2 whitespace-nowrap">
+                      {event.year}
+                    </div>
                     <div className="text-sm">{event.description}</div>
                   </div>
                 )}
