@@ -8,11 +8,7 @@
  * Read more about Tambo at https://tambo.co/docs
  */
 
-import { Timeline } from "@/components/ui/timeline";
-import {
-  getCountryPopulations,
-  getGlobalPopulationTrend,
-} from "@/services/population-stats";
+import { Timeline } from "@/components/timeline";
 import type { TamboComponent } from "@tambo-ai/react";
 import { TamboTool } from "@tambo-ai/react";
 import { z } from "zod";
@@ -25,45 +21,7 @@ import { z } from "zod";
  * can be controlled by AI to dynamically fetch data based on user interactions.
  */
 
-export const tools: TamboTool[] = [
-  {
-    name: "countryPopulation",
-    description:
-      "A tool to get population statistics by country with advanced filtering options",
-    tool: getCountryPopulations,
-    toolSchema: z
-      .function()
-      .args(z.string().describe("The continent to filter countries by"))
-      .returns(
-        z
-          .object({
-            continent: z.string().optional(),
-            sortBy: z.enum(["population", "growthRate"]).optional(),
-            limit: z.number().optional(),
-            order: z.enum(["asc", "desc"]).optional(),
-          })
-          .optional()
-      ),
-  },
-  {
-    name: "globalPopulation",
-    description:
-      "A tool to get global population trends with optional year range filtering",
-    tool: getGlobalPopulationTrend,
-    toolSchema: z
-      .function()
-      .args(z.string().describe("The continent to filter countries by"))
-      .returns(
-        z
-          .object({
-            startYear: z.number().optional(),
-            endYear: z.number().optional(),
-          })
-          .optional()
-      ),
-  },
-  // Add more tools here
-];
+export const tools: TamboTool[] = [];
 
 /**
  * components
