@@ -17,8 +17,8 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Timeline = ({
   title = "",
   events = [],
-  startYear = Math.min(...events.map((e) => e.year)),
-  endYear = Math.max(...events.map((e) => e.year)),
+  startYear = Math.min(...events.map((e) => e.year)) - 100,
+  endYear = Math.max(...events.map((e) => e.year)) + 100,
   tickInterval = 5,
 }: TimelineProps) => {
   // Generate array of years for ticks
@@ -34,9 +34,9 @@ export const Timeline = ({
   const timelineWidth = (years.length - 1) * 100; // 100px per interval
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto h-full min-h-[150px]">
         <div
           style={{
             width: `${timelineWidth}px`,
@@ -58,6 +58,9 @@ export const Timeline = ({
               const position =
                 ((year - startYear) / (endYear - startYear)) * 100;
 
+              const yearDisplay =
+                year < 0 ? `${Math.abs(year)} BC` : `${year} AD`;
+
               return (
                 <div
                   key={year}
@@ -66,7 +69,7 @@ export const Timeline = ({
                 >
                   <div className="h-2 w-0.5 bg-border mt-[-0.3rem]" />
                   <div className="mt-2 text-sm text-muted-foreground">
-                    {year}
+                    {yearDisplay}
                   </div>
                 </div>
               );
@@ -104,7 +107,7 @@ export const TimelineEvents = ({
                 <div className="text-sm font-medium mb-2 whitespace-nowrap">
                   {event.label}
                 </div>
-                <div className="w-4 h-4 bg-primary rounded-full" />
+                <div className="w-3 h-3 bg-primary rounded-full" />
                 {event.description && (
                   <div className="text-xs text-muted-foreground mt-2 whitespace-nowrap">
                     {event.description}

@@ -36,9 +36,13 @@ export function TimelineSpace() {
   }, [thread?.messages]);
 
   return (
-    <div className="w-full p-4 mb-4" data-canvas-space="true">
+    <div className="w-full h-full p-4 mb-4">
       {latestComponent || (
-        <Timeline events={defaultHistoricalEvents} tickInterval={100} />
+        <Timeline
+          title="Human history"
+          events={defaultHistoricalEvents}
+          tickInterval={100}
+        />
       )}
     </div>
   );
