@@ -3,7 +3,6 @@
 import {
   Message,
   MessageContent,
-  MessageRenderedComponentArea,
   type messageVariants,
 } from "@/components/ui/message";
 import { cn } from "@/lib/utils";
@@ -42,7 +41,7 @@ const useThreadContentContext = () => {
   const context = React.useContext(ThreadContentContext);
   if (!context) {
     throw new Error(
-      "ThreadContent sub-components must be used within a ThreadContent",
+      "ThreadContent sub-components must be used within a ThreadContent"
     );
   }
   return context;
@@ -83,7 +82,7 @@ const ThreadContent = React.forwardRef<HTMLDivElement, ThreadContentProps>(
         generationStage,
         variant,
       }),
-      [thread?.messages, isGenerating, generationStage, variant],
+      [thread?.messages, isGenerating, generationStage, variant]
     );
 
     return (
@@ -98,7 +97,7 @@ const ThreadContent = React.forwardRef<HTMLDivElement, ThreadContentProps>(
         </div>
       </ThreadContentContext.Provider>
     );
-  },
+  }
 );
 ThreadContent.displayName = "ThreadContent";
 
@@ -139,7 +138,9 @@ const ThreadContentMessages = React.forwardRef<
           <div
             key={
               message.id ??
-              `${message.role}-${message.createdAt ?? Date.now()}-${message.content?.toString().substring(0, 10)}`
+              `${message.role}-${
+                message.createdAt ?? Date.now()
+              }-${message.content?.toString().substring(0, 10)}`
             }
             data-slot="thread-content-item"
           >
@@ -162,8 +163,6 @@ const ThreadContentMessages = React.forwardRef<
                       : "text-primary bg-container hover:bg-backdrop font-sans"
                   }
                 />
-                {/* Rendered component area determines if the message is a canvas message */}
-                <MessageRenderedComponentArea />
               </div>
             </Message>
           </div>
