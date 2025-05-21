@@ -54,11 +54,11 @@ export const ScrollableMessageContainer = React.forwardRef<
     <div
       ref={scrollContainerRef}
       className={cn(
-        "flex-1 overflow-y-auto",
+        "flex-1 overflow-y-auto max-h-[80vh]",
         "[&::-webkit-scrollbar]:w-[6px]",
         "[&::-webkit-scrollbar-thumb]:bg-gray-300",
         "[&::-webkit-scrollbar:horizontal]:h-[4px]",
-        className,
+        className
       )}
       data-slot="scrollable-message-container"
       {...props}
