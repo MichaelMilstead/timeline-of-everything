@@ -125,16 +125,16 @@ const ThreadContentMessages = React.forwardRef<
   const { messages, isGenerating, variant } = useThreadContentContext();
 
   // Find the index of the last user message
-  const lastUserMessageIndex = [...messages]
-    .reverse()
-    .findIndex((msg) => msg.role === "user");
+  const lastUserMessageIndex = messages.findLastIndex(
+    (msg) => msg.role === "user"
+  );
 
   // If no user message found, show all messages
-  // Otherwise, slice the array to include messages up to and including the last user message
+  // Otherwise, show all messages up to and including the last user message
   const messagesToShow =
     lastUserMessageIndex === -1
       ? messages
-      : messages.slice(0, lastUserMessageIndex + 1);
+      : messages.slice(lastUserMessageIndex);
 
   return (
     <div
