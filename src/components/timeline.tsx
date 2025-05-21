@@ -33,10 +33,29 @@ export const Timeline = ({
   // Calculate timeline width based on number of years
   const timelineWidth = (years.length - 1) * 100; // 100px per interval
 
+  const [focusedEvent, setFocusedEvent] = React.useState<TimelineEvent | null>(
+    null
+  );
+  const timelineRef = React.useRef<HTMLDivElement>(null);
+
+  const handleEventClick = (event: TimelineEvent) => {
+    setFocusedEvent(focusedEvent?.year === event.year ? null : event);
+
+    // Calculate scroll position to center the clicked event
+    if (timelineRef.current) {
+      const position =
+        ((event.year - startYear) / (endYear - startYear)) * timelineWidth;
+      timelineRef.current.scrollTo({
+        left: position - timelineRef.current.clientWidth / 2,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="relative h-full">
       {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
-      <div className="overflow-x-auto h-full min-h-[150px]">
+      <div className="overflow-x-auto h-full min-h-[150px]" ref={timelineRef}>
         <div
           style={{
             width: `${timelineWidth}px`,
@@ -48,6 +67,8 @@ export const Timeline = ({
               events={events}
               startYear={startYear}
               endYear={endYear}
+              focusedEvent={focusedEvent}
+              onEventClick={handleEventClick}
             />
           </div>
           {/* Timeline bar */}
@@ -85,16 +106,21 @@ export const TimelineEvents = ({
   events,
   startYear,
   endYear,
+  focusedEvent,
+  onEventClick,
 }: {
   events: TimelineEvent[];
   startYear: number;
   endYear: number;
+  focusedEvent: TimelineEvent | null;
+  onEventClick: (event: TimelineEvent) => void;
 }) => {
   return (
     <div className="relative w-full min-h-[20px] mb-8">
       {events.map((event, index) => {
         const position =
           ((event.year - startYear) / (endYear - startYear)) * 100;
+        const isFocused = focusedEvent?.year === event.year;
 
         return (
           <div
@@ -107,10 +133,15 @@ export const TimelineEvents = ({
                 <div className="text-sm font-medium mb-2 whitespace-nowrap">
                   {event.label}
                 </div>
-                <div className="w-3 h-3 bg-primary rounded-full" />
-                {event.description && (
-                  <div className="text-xs text-muted-foreground mt-2 whitespace-nowrap">
-                    {event.description}
+                <div
+                  className={`w-3 h-3 bg-primary rounded-full cursor-pointer transition-transform ${
+                    isFocused ? "scale-150" : "hover:scale-125"
+                  }`}
+                  onClick={() => onEventClick(event)}
+                />
+                {isFocused && event.description && (
+                  <div className="absolute top-full mt-4 z-10 bg-background border rounded-lg p-3 shadow-lg min-w-[200px] max-w-[300px]">
+                    <div className="text-sm">{event.description}</div>
                   </div>
                 )}
               </div>
