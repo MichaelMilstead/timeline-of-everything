@@ -37,7 +37,9 @@ export function TimelineSpace() {
 
   return (
     <div className="w-full p-4 mb-4" data-canvas-space="true">
-      {latestComponent || <Timeline events={defaultHistoricalEvents} />}
+      {latestComponent || (
+        <Timeline events={defaultHistoricalEvents} tickInterval={100} />
+      )}
     </div>
   );
 }

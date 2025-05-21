@@ -36,38 +36,42 @@ export const Timeline = ({
   return (
     <div className="relative">
       {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
-      <div
-        style={{
-          width: `${timelineWidth}px`,
-          minWidth: "100%",
-          maxWidth: "100%",
-        }}
-      >
-        <TimelineEvents
-          events={events}
-          startYear={startYear}
-          endYear={endYear}
-        />
+      <div className="overflow-x-auto">
+        <div
+          style={{
+            width: `${timelineWidth}px`,
+          }}
+        >
+          {/* Events above the timeline */}
+          <div className="mb-2">
+            <TimelineEvents
+              events={events}
+              startYear={startYear}
+              endYear={endYear}
+            />
+          </div>
+          {/* Timeline bar */}
+          <div className="h-1 bg-border" />
+          {/* Year ticks */}
+          <div className="relative w-full">
+            {years.map((year) => {
+              const position =
+                ((year - startYear) / (endYear - startYear)) * 100;
 
-        {/* Timeline bar */}
-        <div className="h-1 bg-border mt-16" />
-
-        {/* Year ticks */}
-        <div className="relative w-full">
-          {years.map((year) => {
-            const position = ((year - startYear) / (endYear - startYear)) * 100;
-
-            return (
-              <div
-                key={year}
-                className="absolute transform -translate-x-1/2"
-                style={{ left: `${position}%` }}
-              >
-                <div className="h-2 w-0.5 bg-border mt-[-0.3rem]" />
-                <div className="mt-2 text-sm text-muted-foreground">{year}</div>
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={year}
+                  className="absolute transform -translate-x-1/2"
+                  style={{ left: `${position}%` }}
+                >
+                  <div className="h-2 w-0.5 bg-border mt-[-0.3rem]" />
+                  <div className="mt-2 text-sm text-muted-foreground">
+                    {year}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -84,7 +88,7 @@ export const TimelineEvents = ({
   endYear: number;
 }) => {
   return (
-    <div className="absolute w-full">
+    <div className="relative w-full min-h-[20px] mb-8">
       {events.map((event, index) => {
         const position =
           ((event.year - startYear) / (endYear - startYear)) * 100;
@@ -92,15 +96,20 @@ export const TimelineEvents = ({
         return (
           <div
             key={`${event.year}-${index}`}
-            className="absolute"
+            className="absolute transform -translate-x-1/2"
             style={{ left: `${position}%` }}
           >
             <div className="relative">
-              <div className="absolute bottom-2 transform -translate-x-1/2">
-                <div className="w-4 h-4 bg-primary rounded-full" />
-                <div className="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                  <span className="text-sm font-medium">{event.label}</span>
+              <div className="flex flex-col items-center">
+                <div className="text-sm font-medium mb-2 whitespace-nowrap">
+                  {event.label}
                 </div>
+                <div className="w-4 h-4 bg-primary rounded-full" />
+                {event.description && (
+                  <div className="text-xs text-muted-foreground mt-2 whitespace-nowrap">
+                    {event.description}
+                  </div>
+                )}
               </div>
             </div>
           </div>
