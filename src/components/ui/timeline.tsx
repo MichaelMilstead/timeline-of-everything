@@ -15,8 +15,8 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Timeline = ({
-  title,
-  events,
+  title = "",
+  events = [],
   startYear = Math.min(...events.map((e) => e.year)),
   endYear = Math.max(...events.map((e) => e.year)),
   tickInterval = 5,

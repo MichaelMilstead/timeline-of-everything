@@ -1,3 +1,4 @@
+"use client";
 import { components } from "@/lib/tambo";
 import { TamboProvider } from "@tambo-ai/react";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -26,6 +27,7 @@ export default function RootLayout({
         <TamboProvider
           apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
           components={components}
+          tamboUrl={process.env.NEXT_PUBLIC_TAMBO_API_URL}
         >
           {children}
         </TamboProvider>
