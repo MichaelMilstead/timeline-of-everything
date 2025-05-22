@@ -1,148 +1,84 @@
-# Tambo Template
+# The Timeline of Everything
 
-This is a starter NextJS app with Tambo hooked up to get your AI app development started quickly.
+Learn about the history of anything, visualized on a timeline to understand relative distance.
 
-## Get Started
+![Screenshot](public/timeline-of-everything.png)
 
-1. Run `npm create-tambo@latest my-tambo-app` for a new project
+Uses [Tambo](https://tambo.co) to build a timeline of events based on an input message.
 
-2. `npm install`
+[Tambo](https://tambo.co) is a tool that lets you define and register your React components as UI tools that an LLM can use.
 
-3. `npx tambo init`
+## Run locally
 
-- or rename `example.env.local` to `.env.local` and add your tambo API key you can get for free [here](https://tambo.co/dashboard).
+1. `npm install`
 
-4. Run `npm run dev` and go to `localhost:3000` to use the app!
+2. Rename `example.env.local` to `.env.local` and add your tambo key:
+
+- `NEXT_PUBLIC_TAMBO_API_KEY`: Your Tambo API key. You can get a tambo API key for free [here](https://tambo.co/dashboard), or by running `npx tambo init`
+
+Your `.env.local` file should look like this:
+
+```
+NEXT_PUBLIC_TAMBO_API_KEY=<your tambo api key>
+```
+
+3. Run `npm run dev` and go to `localhost:3000` to use the app!
 
 ## Customizing
 
-### Change what components tambo can control
+### Change what components Tambo can use
 
-You can see how the `Graph` component is registered with tambo in `src/lib/tambo.ts`:
+The components or "UI tools" that Tambo can use are registered in `src/lib/tambo.ts`.
 
-```tsx
-const components: TamboComponent[] = [
+For example, see how the `Timeline` component is registered with tambo:
+
+```tsx title="src/lib/tambo.ts"
+export const components: TamboComponent[] = [
   {
-    name: "Graph",
+    name: "Timeline",
     description:
-      "A component that renders various types of charts (bar, line, pie) using Recharts. Supports customizable data visualization with labels, datasets, and styling options.",
-    component: Graph,
+      "A component that renders a horizontal timeline with events plotted along a time axis. Supports customizable year ranges, event labels, and tick intervals. Use this anytime somebody is asking you to tell them about something that happened in the past.",
+    component: Timeline,
     propsSchema: z.object({
-      data: z
-        .object({
-          type: z
-            .enum(["bar", "line", "pie"])
-            .describe("Type of graph to render"),
-          labels: z.array(z.string()).describe("Labels for the graph"),
-          datasets: z
-            .array(
-              z.object({
-                label: z.string().describe("Label for the dataset"),
-                data: z
-                  .array(z.number())
-                  .describe("Data points for the dataset"),
-                color: z
-                  .string()
-                  .optional()
-                  .describe("Optional color for the dataset"),
-              })
-            )
-            .describe("Data for the graph"),
-        })
-        .describe("Data object containing chart configuration and values"),
-      title: z.string().optional().describe("Optional title for the chart"),
-      showLegend: z
-        .boolean()
-        .optional()
-        .describe("Whether to show the legend (default: true)"),
-      variant: z
-        .enum(["default", "solid", "bordered"])
-        .optional()
-        .describe("Visual style variant of the graph"),
-      size: z
-        .enum(["default", "sm", "lg"])
-        .optional()
-        .describe("Size of the graph"),
+      title: z.string().describe("Title for the timeline"),
+      events: z
+        .array(
+          z.object({
+            year: z.number().describe("The year when the event occurred"),
+            label: z.string().describe("Label text for the event"),
+            description: z
+              .string()
+              .describe(
+                "Description of the event. Should be around a paragraph."
+              ),
+          })
+        )
+        .describe("Array of events to display on the timeline"),
+      tickInterval: z
+        .number()
+        .describe(
+          "Interval between year ticks on the timeline to display (default: 5)"
+        ),
     }),
   },
-  // Add more components for Tambo to control here!
 ];
 ```
 
-You can install this graph component into any project with:
+Note that the `component` field in the definition is a reference to the actual React component.
 
-```bash
-npx tambo add graph
-```
+This list is passed to the `TamboProvider` component in `src/app/layout.tsx`:
 
-The example Graph component demonstrates several key features:
-
-- Different prop types (strings, arrays, enums, nested objects)
-- Multiple chart types (bar, line, pie)
-- Customizable styling (variants, sizes)
-- Optional configurations (title, legend, colors)
-- Data visualization capabilities
-
-Update the `components` array with any component(s) you want tambo to be able to use in a response!
-
-You can find more information about the options [here](https://tambo.co/docs/concepts/registering-components)
-
-### Add tools for tambo to use
-
-```tsx
-export const tools: TamboTool[] = [
-  {
-    name: "globalPopulation",
-    description:
-      "A tool to get global population trends with optional year range filtering",
-    tool: getGlobalPopulationTrend,
-    toolSchema: z.function().args(
-      z
-        .object({
-          startYear: z.number().optional(),
-          endYear: z.number().optional(),
-        })
-        .optional()
-    ),
-  },
-];
-```
-
-Find more information about tools [here.](https://tambo.co/docs/concepts/tools)
-
-### The Magic of Tambo Requires the TamboProvider
-
-Make sure in the TamboProvider wrapped around your app:
-
-```tsx
-...
+```tsx title="src/app/layout.tsx"
 <TamboProvider
   apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
-  components={components} // Array of components to control
-  tools={tools} // Array of tools it can use
+  components={components}
 >
   {children}
 </TamboProvider>
 ```
 
-In this example we do this in the `Layout.tsx` file, but you can do it anywhere in your app that is a client component.
+Update the `components` array with any component(s) you want Tambo to be able to show.
 
-### Change where component responses are shown
+You can find more information about the component registration options [here.](https://tambo.co/docs/concepts/registering-components)
 
-The components used by tambo are shown alongside the message resopnse from tambo within the chat thread, but you can have the result components show wherever you like by accessing the latest thread message's `renderedComponent` field:
-
-```tsx
-const { thread } = useTambo();
-const latestComponent =
-  thread?.messages[thread.messages.length - 1]?.renderedComponent;
-
-return (
-  <div>
-    {latestComponent && (
-      <div className="my-custom-wrapper">{latestComponent}</div>
-    )}
-  </div>
-);
-```
-
-For more detailed documentation, visit [Tambo's official docs](https://tambo.co/docs).
+#
