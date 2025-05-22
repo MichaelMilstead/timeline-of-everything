@@ -38,23 +38,6 @@ export const ThreadContainer = React.forwardRef<
         // Base layout and styling
         "flex flex-col bg-white overflow-hidden bg-background",
 
-        // Sidebar spacing based on history position
-        historyPosition === "right"
-          ? "mr-[var(--sidebar-width,16rem)]"
-          : "ml-[var(--sidebar-width,16rem)]",
-
-        // Width constraints based on canvas presence
-        hasCanvasSpace
-          ? "max-w-3xl"
-          : "w-[calc(100%-var(--sidebar-width,16rem))]",
-
-        // Border styling when canvas is present
-        hasCanvasSpace && (canvasIsOnLeft ? "border-l" : "border-r"),
-        hasCanvasSpace && "border-border",
-
-        // Right alignment when specified
-        !isLeftPanel && "ml-auto",
-
         // Custom classes passed via props
         className
       )}

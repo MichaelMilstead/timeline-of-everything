@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 
 export interface TimelineEvent {
   year: number;
@@ -37,6 +38,12 @@ export const Timeline = ({
     events?.[0] ?? null
   );
   const timelineRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      setFocusedEvent(events[0]);
+    }
+  }, [events]);
 
   const handleEventClick = (event: TimelineEvent) => {
     setFocusedEvent(focusedEvent?.year === event.year ? events[0] : event);
