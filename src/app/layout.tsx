@@ -1,16 +1,10 @@
 "use client";
 import { components } from "@/lib/tambo";
 import { TamboProvider } from "@tambo-ai/react";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Gelasio } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const gelasio = Gelasio({
   subsets: ["latin"],
 });
 
@@ -21,9 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${gelasio.className} antialiased`}>
         <TamboProvider
           apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
           components={components}

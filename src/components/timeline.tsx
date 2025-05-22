@@ -10,18 +10,16 @@ export interface TimelineEvent {
 export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   events: TimelineEvent[];
-  startYear?: number;
-  endYear?: number;
   tickInterval?: number;
 }
 
 export const Timeline = ({
   title = "",
   events = [],
-  startYear = Math.min(...events.map((e) => e.year)) - 100,
-  endYear = Math.max(...events.map((e) => e.year)) + 100,
   tickInterval = 5,
 }: TimelineProps) => {
+  const startYear = Math.min(...events.map((e) => e.year)) - 2 * tickInterval;
+  const endYear = Math.max(...events.map((e) => e.year)) + 2 * tickInterval;
   // Generate array of years for ticks
   const years = React.useMemo(() => {
     const years: number[] = [];
