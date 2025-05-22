@@ -6,58 +6,58 @@ import { Timeline, TimelineEvent } from "./timeline";
 // Default historical events for the timeline
 const defaultHistoricalEvents: TimelineEvent[] = [
   {
-    year: -4600000000,
-    label: "Formation of Earth",
+    year: 1452,
+    label: "Birth of Leonardo",
     description:
-      "Earth forms from the solar nebula, becoming the third planet from the Sun.",
+      "Leonardo da Vinci is born in Vinci, Republic of Florence, to Ser Piero and Caterina.",
   },
   {
-    year: -3800000000,
-    label: "First Life Appears",
+    year: 1466,
+    label: "Apprenticeship Begins",
     description:
-      "Earliest evidence of simple life forms appears in the form of single-celled organisms.",
+      "Begins apprenticeship in Verrocchio's workshop in Florence, learning painting, sculpture, and technical skills.",
   },
   {
-    year: -540000000,
-    label: "Cambrian Explosion",
+    year: 1472,
+    label: "Guild Membership",
     description:
-      "Rapid diversification of complex animal life forms, marking the beginning of most modern phyla.",
+      "Qualifies as a master in the Guild of St Luke, the guild of artists and doctors of medicine.",
   },
   {
-    year: -252000000,
-    label: "Great Permian Extinction",
+    year: 1482,
+    label: "Moves to Milan",
     description:
-      "The largest mass extinction event in Earth's history, wiping out about 95% of marine species and 70% of terrestrial species.",
+      "Enters the service of Duke of Milan, Ludovico Sforza, as an engineer, architect, and painter.",
   },
   {
-    year: -66000000,
-    label: "Dinosaur Extinction",
+    year: 1495,
+    label: "The Last Supper",
     description:
-      "A massive asteroid impact leads to the extinction of non-avian dinosaurs, allowing mammals to diversify.",
+      "Begins painting The Last Supper in the Convent of Santa Maria delle Grazie in Milan.",
   },
   {
-    year: -300000,
-    label: "Rise of Homo Sapiens",
+    year: 1503,
+    label: "Mona Lisa",
     description:
-      "Modern humans evolve in Africa, eventually spreading across the globe.",
+      "Starts painting the Mona Lisa, which would become his most famous work.",
   },
   {
-    year: -12000,
-    label: "End of Last Ice Age",
+    year: 1506,
+    label: "Return to Milan",
     description:
-      "The end of the Pleistocene epoch marks the transition to our current geological epoch, the Holocene.",
+      "Returns to Milan to work as an architect and engineer for the French governor Charles d'Amboise.",
   },
   {
-    year: 1750,
-    label: "Industrial Revolution Begins",
+    year: 1513,
+    label: "Rome Period",
     description:
-      "The Industrial Revolution marks the transition to new manufacturing processes and significant environmental changes.",
+      "Moves to Rome under the patronage of Pope Leo X, focusing on scientific studies and engineering projects.",
   },
   {
-    year: 2023,
-    label: "AI Revolution",
+    year: 1519,
+    label: "Death of Leonardo",
     description:
-      "The development of advanced artificial intelligence begins to reshape human society and technology.",
+      "Dies at Clos Lucé, France, while in the service of King Francis I.",
   },
 ];
 export function TimelineSpace() {
@@ -82,9 +82,9 @@ export function TimelineSpace() {
     <div className="w-full h-full p-4 mb-4">
       {latestComponent || (
         <Timeline
-          title="History of the world"
+          title="The life of Leonardo da Vinci"
           events={defaultHistoricalEvents}
-          tickInterval={100000000}
+          tickInterval={5}
         />
       )}
     </div>
