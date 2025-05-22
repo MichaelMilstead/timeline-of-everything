@@ -215,9 +215,7 @@ export const Timeline = ({
               <div className="text-sm font-medium mb-2">
                 {focusedEvent.label} ({yearDisplay(focusedEvent.year)})
               </div>
-              <div className="text-sm text-muted-foreground">
-                {focusedEvent.description}
-              </div>
+              <div className="text-sm">{focusedEvent.description}</div>
             </div>
           </div>
         )}
