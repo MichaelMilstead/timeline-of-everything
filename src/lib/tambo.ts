@@ -41,7 +41,11 @@ export const components: TamboComponent[] = [
       events: z
         .array(
           z.object({
-            year: z.number().describe("The year when the event occurred"),
+            year: z
+              .number()
+              .describe(
+                "The year when the event occurred. Use negative numbers for years BC. Use the full year number, so 1000, not 1k. 1.5 billion years ago should be -1500000000 for example."
+              ),
             label: z.string().describe("Label text for the event"),
             description: z
               .string()

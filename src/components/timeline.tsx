@@ -41,8 +41,13 @@ const calculateTickInterval = (
 export const Timeline = ({
   title = "",
   events = [],
-  tickInterval: providedTickInterval,
+  tickInterval: providedTickInterval = 10,
 }: TimelineProps) => {
+  // Add safety check for empty events array
+  if (!events.length) {
+    return null;
+  }
+
   const startYear = Math.min(...events.map((e) => e.year));
   const endYear = Math.max(...events.map((e) => e.year));
 
@@ -50,17 +55,33 @@ export const Timeline = ({
   const effectiveTickInterval =
     providedTickInterval || calculateTickInterval(startYear, endYear);
 
-  // Generate array of years for ticks
+  // Generate array of years for ticks with safety checks
   const years = React.useMemo(() => {
+    if (!Number.isFinite(startYear) || !Number.isFinite(endYear)) {
+      return [];
+    }
     const years: number[] = [];
+
+    // Add two ticks before the start year
+    for (let i = 2; i > 0; i--) {
+      years.push(startYear - effectiveTickInterval * i);
+    }
+
+    // Add original ticks
     for (let year = startYear; year <= endYear; year += effectiveTickInterval) {
       years.push(year);
     }
+
+    // Add two ticks after the end year
+    for (let i = 1; i <= 2; i++) {
+      years.push(endYear + effectiveTickInterval * i);
+    }
+
     return years;
   }, [startYear, endYear, effectiveTickInterval]);
 
-  // Calculate timeline width based on number of years
-  const timelineWidth = (years.length - 1) * 100; // 100px per interval
+  // Update timeline width calculation to account for extra ticks
+  const timelineWidth = Math.max((years.length - 1) * 100, 100);
 
   const [focusedEvent, setFocusedEvent] = React.useState<TimelineEvent>(
     events?.[0] ?? null
@@ -140,19 +161,20 @@ export const Timeline = ({
             <div className="mb-2 relative z-10">
               <TimelineEvents
                 events={events}
-                startYear={startYear}
-                endYear={endYear}
+                startYear={years[0]}
+                endYear={years[years.length - 1]}
                 focusedEvent={focusedEvent}
                 onEventClick={handleEventClick}
               />
             </div>
             {/* Timeline bar */}
-            <div className="h-1 bg-border" />
+            <div className="h-1 bg-border w-full" />
             {/* Year ticks */}
             <div className="relative w-full z-0">
               {years.map((year) => {
                 const position =
-                  ((year - startYear) / (endYear - startYear)) * 100;
+                  ((year - years[0]) / (years[years.length - 1] - years[0])) *
+                  100;
 
                 return (
                   <div
