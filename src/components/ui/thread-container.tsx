@@ -23,12 +23,6 @@ export const ThreadContainer = React.forwardRef<
   ThreadContainerProps
 >(({ className, children, ...props }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { hasCanvasSpace, canvasIsOnLeft } = useCanvasDetection(containerRef);
-  const { isLeftPanel, historyPosition } = usePositioning(
-    className,
-    canvasIsOnLeft,
-    hasCanvasSpace
-  );
   const mergedRef = useMergedRef<HTMLDivElement | null>(ref, containerRef);
 
   return (
