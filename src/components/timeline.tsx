@@ -176,6 +176,7 @@ export const Timeline = ({
             style={{
               width: `${timelineWidth}px`,
             }}
+            className="mx-auto"
           >
             {/* Events above the timeline */}
             <div className="mb-2 relative z-10">
