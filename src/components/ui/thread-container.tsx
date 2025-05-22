@@ -30,7 +30,7 @@ export const ThreadContainer = React.forwardRef<
       ref={mergedRef}
       className={cn(
         // Base layout and styling
-        "flex flex-col bg-white overflow-hidden bg-background",
+        "flex flex-col bg-[#f5f5f5] overflow-hidden",
 
         // Custom classes passed via props
         className

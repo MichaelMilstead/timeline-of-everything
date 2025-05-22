@@ -48,16 +48,16 @@ export const MessageThreadFull = React.forwardRef<
   const mergedRef = useMergedRef<HTMLDivElement | null>(ref, containerRef);
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto bg-[#f5f5f5]">
       <ThreadContainer ref={mergedRef} className={className} {...props}>
-        <ScrollableMessageContainer className="p-4 ">
+        <ScrollableMessageContainer>
           <ThreadContent variant={variant}>
             <ThreadContentMessages />
           </ThreadContent>
         </ScrollableMessageContainer>
 
         {/* Message input */}
-        <div className="p-4">
+        <div>
           <MessageInput contextKey={contextKey}>
             <MessageInputTextarea placeholder="Tell me about the history of computers" />
             <MessageInputToolbar>
