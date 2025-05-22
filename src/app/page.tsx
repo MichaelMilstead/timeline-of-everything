@@ -22,6 +22,9 @@ export default function Home() {
           <div className="w-full max-w-4xl mx-auto">
             <MessageThreadFull contextKey="tambo-template" />
           </div>
+          <div className="text-sm text-muted-foreground">
+            built with <a href="https://tambo.co">tambo</a>
+          </div>
         </main>
       </div>
     </TamboProvider>
