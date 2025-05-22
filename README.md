@@ -1,6 +1,6 @@
 # The Timeline of Everything
 
-Learn about the history of anything, visualized on a timeline to understand relative distance.
+Chat to learn about the history of anything, visualized on a timeline to understand relative distances in time.
 
 ![Screenshot](public/timeline-of-everything.png)
 
