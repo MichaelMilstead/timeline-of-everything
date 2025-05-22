@@ -43,20 +43,21 @@ export const Timeline = ({
   events = [],
   tickInterval: providedTickInterval = 10,
 }: TimelineProps) => {
+  // Filter complete events once at the start
+  const completeYearEvents = React.useMemo(
+    () => events.filter((e) => e.year != null && e.label && e.description),
+    [events]
+  );
+
   // Move all hooks to the top
   const [focusedEvent, setFocusedEvent] = React.useState<TimelineEvent>(
-    events?.[0] ?? null
+    completeYearEvents[0] ?? null
   );
   const timelineRef = React.useRef<HTMLDivElement>(null);
 
-  // Calculate years only if we have events
+  // Update to use completeEvents
   const { years, startYear, endYear, timelineWidth } = React.useMemo(() => {
-    // Filter out incomplete events
-    const eventsWithYear = events.filter(
-      (e) => e.year != null && e.label && e.description
-    );
-
-    if (!eventsWithYear.length) {
+    if (!completeYearEvents.length) {
       return {
         years: [],
         startYear: 0,
@@ -66,8 +67,8 @@ export const Timeline = ({
       };
     }
 
-    const startYear = Math.min(...eventsWithYear.map((e) => e.year));
-    const endYear = Math.max(...eventsWithYear.map((e) => e.year));
+    const startYear = Math.min(...completeYearEvents.map((e) => e.year));
+    const endYear = Math.max(...completeYearEvents.map((e) => e.year));
     const effectiveTickInterval =
       providedTickInterval || calculateTickInterval(startYear, endYear);
 
@@ -107,25 +108,23 @@ export const Timeline = ({
       effectiveTickInterval,
       timelineWidth,
     };
-  }, [events, providedTickInterval]);
+  }, [completeYearEvents, providedTickInterval]);
 
   useEffect(() => {
-    // Only set focused event if it's complete
-    const completeEvents = events.filter(
-      (e) => e.year != null && e.label && e.description
-    );
-    if (completeEvents.length > 0) {
-      setFocusedEvent(completeEvents[0]);
+    if (completeYearEvents.length > 0) {
+      setFocusedEvent(completeYearEvents[0]);
     }
-  }, [events]);
+  }, [completeYearEvents]);
 
   // Add early return after hooks
-  if (!events.length) {
+  if (!completeYearEvents.length) {
     return null;
   }
 
   const handleEventClick = (event: TimelineEvent) => {
-    setFocusedEvent(focusedEvent?.year === event.year ? events[0] : event);
+    setFocusedEvent(
+      focusedEvent?.year === event.year ? completeYearEvents[0] : event
+    );
 
     if (timelineRef.current) {
       const position =
@@ -138,15 +137,22 @@ export const Timeline = ({
   };
 
   const handlePrevEvent = () => {
-    const currentIndex = events.findIndex((e) => e.year === focusedEvent?.year);
-    const prevEvent = events[currentIndex - 1] ?? events[events.length - 1];
+    const currentIndex = completeYearEvents.findIndex(
+      (e) => e.year === focusedEvent?.year
+    );
+    const prevEvent =
+      completeYearEvents[currentIndex - 1] ??
+      completeYearEvents[completeYearEvents.length - 1];
     setFocusedEvent(prevEvent);
     scrollToEvent(prevEvent);
   };
 
   const handleNextEvent = () => {
-    const currentIndex = events.findIndex((e) => e.year === focusedEvent?.year);
-    const nextEvent = events[currentIndex + 1] ?? events[0];
+    const currentIndex = completeYearEvents.findIndex(
+      (e) => e.year === focusedEvent?.year
+    );
+    const nextEvent =
+      completeYearEvents[currentIndex + 1] ?? completeYearEvents[0];
     setFocusedEvent(nextEvent);
     scrollToEvent(nextEvent);
   };
@@ -176,8 +182,6 @@ export const Timeline = ({
     return `${absYear.toLocaleString()}${suffix}`;
   };
 
-  console.log(events);
-  console.log(timelineWidth);
   return (
     <div className="relative h-full">
       {title && <h2 className="text-lg mb-4">{title}</h2>}
@@ -193,7 +197,7 @@ export const Timeline = ({
             {/* Events above the timeline */}
             <div className="mb-2 relative z-10">
               <TimelineEvents
-                events={events}
+                events={completeYearEvents}
                 startYear={years[0]}
                 endYear={years[years.length - 1]}
                 focusedEvent={focusedEvent}
