@@ -1,5 +1,7 @@
 # The Timeline of Everything
 
+live here: https://timeline-of-everything.milst.dev/
+
 Chat to learn about the history of anything, visualized on a timeline to understand relative distances in time.
 
 ![Screenshot](public/timeline-of-everything.png)
