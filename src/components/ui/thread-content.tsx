@@ -134,7 +134,7 @@ const ThreadContentMessages = React.forwardRef<
   const messagesToShow =
     lastUserMessageIndex === -1
       ? messages
-      : messages.slice(lastUserMessageIndex);
+      : messages.slice(lastUserMessageIndex + 1);
 
   return (
     <div

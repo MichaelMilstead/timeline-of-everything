@@ -76,7 +76,7 @@ const useMessageInputContext = () => {
   const context = React.useContext(MessageInputContext);
   if (!context) {
     throw new Error(
-      "MessageInput sub-components must be used within a MessageInput",
+      "MessageInput sub-components must be used within a MessageInput"
     );
   }
   return context;
@@ -131,6 +131,7 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
 
         setSubmitError(null);
         setDisplayValue("");
+
         try {
           await submit({
             contextKey,
@@ -146,11 +147,11 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
           setSubmitError(
             error instanceof Error
               ? error.message
-              : "Failed to send message. Please try again.",
+              : "Failed to send message. Please try again."
           );
         }
       },
-      [value, submit, contextKey, setValue, setDisplayValue, setSubmitError],
+      [value, submit, contextKey, setValue, setDisplayValue, setSubmitError]
     );
 
     const contextValue = React.useMemo(
@@ -178,7 +179,7 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
         error,
         contextKey,
         submitError,
-      ],
+      ]
     );
     return (
       <MessageInputContext.Provider
@@ -197,7 +198,7 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
         </form>
       </MessageInputContext.Provider>
     );
-  },
+  }
 );
 MessageInput.displayName = "MessageInput";
 
@@ -251,7 +252,7 @@ const MessageInputTextarea = ({
       onKeyDown={handleKeyDown}
       className={cn(
         "flex-1 p-3 rounded-t-lg bg-background text-foreground resize-none text-sm min-h-[82px] max-h-[40vh] focus:outline-none placeholder:text-muted-foreground/50",
-        className,
+        className
       )}
       disabled={isPending}
       placeholder={placeholder}
@@ -300,7 +301,7 @@ const MessageInputSubmitButton = React.forwardRef<
       disabled={isPending}
       className={cn(
         "w-10 h-10 bg-black/80 text-white rounded-lg hover:bg-black/70 disabled:opacity-50 flex items-center justify-center cursor-pointer",
-        className,
+        className
       )}
       aria-label="Send message"
       data-slot="message-input-submit"
@@ -392,10 +393,10 @@ MessageInputToolbar.displayName = "MessageInput.Toolbar";
 
 // --- Exports ---
 export {
-  messageInputVariants,
   MessageInput,
-  MessageInputTextarea,
-  MessageInputSubmitButton,
-  MessageInputToolbar,
   MessageInputError,
+  MessageInputSubmitButton,
+  MessageInputTextarea,
+  MessageInputToolbar,
+  messageInputVariants,
 };

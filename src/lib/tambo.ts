@@ -34,7 +34,7 @@ export const components: TamboComponent[] = [
   {
     name: "Timeline",
     description:
-      "A component that renders a horizontal timeline with events plotted along a time axis. Supports customizable year ranges, event labels, and tick intervals.",
+      "A component that renders a horizontal timeline with events plotted along a time axis. Supports customizable year ranges, event labels, and tick intervals. Use this anytime somebody is asking you to tell them about something that happened in the past.",
     component: Timeline,
     propsSchema: z.object({
       title: z.string().describe("Title for the timeline"),
@@ -45,21 +45,12 @@ export const components: TamboComponent[] = [
             label: z.string().describe("Label text for the event"),
             description: z
               .string()
-              .optional()
-              .describe("Optional detailed description of the event"),
+              .describe(
+                "Description of the event. Should be around a paragraph."
+              ),
           })
         )
         .describe("Array of events to display on the timeline"),
-      startYear: z
-        .number()
-        .describe(
-          "Start year for the timeline to display (defaults to earliest event year)"
-        ),
-      endYear: z
-        .number()
-        .describe(
-          "End year for the timeline to display (defaults to latest event year)"
-        ),
       tickInterval: z
         .number()
         .describe(
