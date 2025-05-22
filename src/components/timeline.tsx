@@ -51,7 +51,12 @@ export const Timeline = ({
 
   // Calculate years only if we have events
   const { years, startYear, endYear, timelineWidth } = React.useMemo(() => {
-    if (!events.length) {
+    // Filter out incomplete events
+    const eventsWithYear = events.filter(
+      (e) => e.year != null && e.label && e.description
+    );
+
+    if (!eventsWithYear.length) {
       return {
         years: [],
         startYear: 0,
@@ -61,8 +66,8 @@ export const Timeline = ({
       };
     }
 
-    const startYear = Math.min(...events.map((e) => e.year));
-    const endYear = Math.max(...events.map((e) => e.year));
+    const startYear = Math.min(...eventsWithYear.map((e) => e.year));
+    const endYear = Math.max(...eventsWithYear.map((e) => e.year));
     const effectiveTickInterval =
       providedTickInterval || calculateTickInterval(startYear, endYear);
 
@@ -105,8 +110,12 @@ export const Timeline = ({
   }, [events, providedTickInterval]);
 
   useEffect(() => {
-    if (events.length > 0) {
-      setFocusedEvent(events[0]);
+    // Only set focused event if it's complete
+    const completeEvents = events.filter(
+      (e) => e.year != null && e.label && e.description
+    );
+    if (completeEvents.length > 0) {
+      setFocusedEvent(completeEvents[0]);
     }
   }, [events]);
 
@@ -167,6 +176,8 @@ export const Timeline = ({
     return `${absYear.toLocaleString()}${suffix}`;
   };
 
+  console.log(events);
+  console.log(timelineWidth);
   return (
     <div className="relative h-full">
       {title && <h2 className="text-lg mb-4">{title}</h2>}
@@ -175,6 +186,7 @@ export const Timeline = ({
           <div
             style={{
               width: `${timelineWidth}px`,
+              transition: "width 0.3s ease-in-out",
             }}
             className="mx-auto"
           >
@@ -269,7 +281,10 @@ export const TimelineEvents = ({
           <div
             key={`${event.year}-${index}`}
             className="absolute transform -translate-x-1/2"
-            style={{ left: `${position}%` }}
+            style={{
+              left: `${position}%`,
+              transition: "left 0.3s ease-in-out",
+            }}
           >
             <div className="relative">
               <div className="flex flex-col items-center">
