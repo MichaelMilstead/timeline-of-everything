@@ -6,58 +6,58 @@ import { Timeline, TimelineEvent } from "./timeline";
 // Default historical events for the timeline
 const defaultHistoricalEvents: TimelineEvent[] = [
   {
-    year: -3000,
-    label: "First civilizations emerge in Mesopotamia",
+    year: -4600000000,
+    label: "Formation of Earth",
     description:
-      "The earliest known civilizations emerged in Mesopotamia around 3000 BC, marking the beginning of human history.",
+      "Earth forms from the solar nebula, becoming the third planet from the Sun.",
   },
   {
-    year: -500,
-    label: "Classical Age in Ancient Greece",
+    year: -3800000000,
+    label: "First Life Appears",
     description:
-      "The Classical Age in Ancient Greece, spanning from 500 to 300 BC, was a period of great cultural and intellectual achievement.",
+      "Earliest evidence of simple life forms appears in the form of single-celled organisms.",
   },
   {
-    year: 476,
-    label: "Fall of the Western Roman Empire",
+    year: -540000000,
+    label: "Cambrian Explosion",
     description:
-      "The fall of the Western Roman Empire in 476 AD marked the end of the ancient world and the beginning of the Middle Ages.",
+      "Rapid diversification of complex animal life forms, marking the beginning of most modern phyla.",
   },
   {
-    year: 1440,
-    label: "Invention of the Printing Press",
+    year: -252000000,
+    label: "Great Permian Extinction",
     description:
-      "The invention of the printing press by Johannes Gutenberg in 1440 AD revolutionized the way information was disseminated, making books more accessible to the public.",
+      "The largest mass extinction event in Earth's history, wiping out about 95% of marine species and 70% of terrestrial species.",
   },
   {
-    year: 1776,
-    label: "American Declaration of Independence",
+    year: -66000000,
+    label: "Dinosaur Extinction",
     description:
-      "The American Declaration of Independence, adopted in 1776, marked the beginning of the United States of America as a nation.",
+      "A massive asteroid impact leads to the extinction of non-avian dinosaurs, allowing mammals to diversify.",
   },
   {
-    year: 1903,
-    label: "First Powered Flight by Wright Brothers",
+    year: -300000,
+    label: "Rise of Homo Sapiens",
     description:
-      "The first successful powered flight by the Wright brothers took place in 1903, marking a major milestone in aviation history.",
+      "Modern humans evolve in Africa, eventually spreading across the globe.",
   },
   {
-    year: 1969,
-    label: "First Moon Landing",
+    year: -12000,
+    label: "End of Last Ice Age",
     description:
-      "The first Moon landing by the Apollo 11 mission in 1969 marked a major milestone in human history.",
+      "The end of the Pleistocene epoch marks the transition to our current geological epoch, the Holocene.",
   },
   {
-    year: 2007,
-    label: "First iPhone Released",
+    year: 1750,
+    label: "Industrial Revolution Begins",
     description:
-      "The first iPhone was released in 2007, revolutionizing the mobile phone industry and changing the way people communicate and access information.",
+      "The Industrial Revolution marks the transition to new manufacturing processes and significant environmental changes.",
   },
   {
     year: 2023,
-    label: "AI Revolution with GPT and LLMs",
+    label: "AI Revolution",
     description:
-      "The AI revolution, led by GPT and LLMs, has transformed the way information is processed and generated, impacting various industries and sectors.",
+      "The development of advanced artificial intelligence begins to reshape human society and technology.",
   },
 ];
 export function TimelineSpace() {
@@ -82,7 +82,7 @@ export function TimelineSpace() {
     <div className="w-full h-full p-4 mb-4">
       {latestComponent || (
         <Timeline
-          title="Human history"
+          title="History of the world"
           events={defaultHistoricalEvents}
           tickInterval={100}
         />
