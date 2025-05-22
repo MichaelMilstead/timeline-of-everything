@@ -43,23 +43,39 @@ export const Timeline = ({
   events = [],
   tickInterval: providedTickInterval = 10,
 }: TimelineProps) => {
-  // Add safety check for empty events array
-  if (!events.length) {
-    return null;
-  }
+  // Move all hooks to the top
+  const [focusedEvent, setFocusedEvent] = React.useState<TimelineEvent>(
+    events?.[0] ?? null
+  );
+  const timelineRef = React.useRef<HTMLDivElement>(null);
 
-  const startYear = Math.min(...events.map((e) => e.year));
-  const endYear = Math.max(...events.map((e) => e.year));
-
-  // Calculate appropriate tick interval if not provided
-  const effectiveTickInterval =
-    providedTickInterval || calculateTickInterval(startYear, endYear);
-
-  // Generate array of years for ticks with safety checks
-  const years = React.useMemo(() => {
-    if (!Number.isFinite(startYear) || !Number.isFinite(endYear)) {
-      return [];
+  // Calculate years only if we have events
+  const { years, startYear, endYear, timelineWidth } = React.useMemo(() => {
+    if (!events.length) {
+      return {
+        years: [],
+        startYear: 0,
+        endYear: 0,
+        effectiveTickInterval: 0,
+        timelineWidth: 0,
+      };
     }
+
+    const startYear = Math.min(...events.map((e) => e.year));
+    const endYear = Math.max(...events.map((e) => e.year));
+    const effectiveTickInterval =
+      providedTickInterval || calculateTickInterval(startYear, endYear);
+
+    if (!Number.isFinite(startYear) || !Number.isFinite(endYear)) {
+      return {
+        years: [],
+        startYear,
+        endYear,
+        effectiveTickInterval,
+        timelineWidth: 0,
+      };
+    }
+
     const years: number[] = [];
 
     // Add two ticks before the start year
@@ -77,16 +93,16 @@ export const Timeline = ({
       years.push(endYear + effectiveTickInterval * i);
     }
 
-    return years;
-  }, [startYear, endYear, effectiveTickInterval]);
+    const timelineWidth = Math.max((years.length - 1) * 100, 100);
 
-  // Update timeline width calculation to account for extra ticks
-  const timelineWidth = Math.max((years.length - 1) * 100, 100);
-
-  const [focusedEvent, setFocusedEvent] = React.useState<TimelineEvent>(
-    events?.[0] ?? null
-  );
-  const timelineRef = React.useRef<HTMLDivElement>(null);
+    return {
+      years,
+      startYear,
+      endYear,
+      effectiveTickInterval,
+      timelineWidth,
+    };
+  }, [events, providedTickInterval]);
 
   useEffect(() => {
     if (events.length > 0) {
@@ -94,10 +110,14 @@ export const Timeline = ({
     }
   }, [events]);
 
+  // Add early return after hooks
+  if (!events.length) {
+    return null;
+  }
+
   const handleEventClick = (event: TimelineEvent) => {
     setFocusedEvent(focusedEvent?.year === event.year ? events[0] : event);
 
-    // Calculate scroll position to center the clicked event
     if (timelineRef.current) {
       const position =
         ((event.year - startYear) / (endYear - startYear)) * timelineWidth;
