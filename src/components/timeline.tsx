@@ -13,21 +13,51 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
   tickInterval?: number;
 }
 
+// Update the tickInterval calculation
+const calculateTickInterval = (
+  startYear: number,
+  endYear: number,
+  desiredTicks = 10
+) => {
+  const range = Math.abs(endYear - startYear);
+
+  // For ranges over 1 billion years
+  if (range > 1_000_000_000) {
+    return Math.ceil(range / desiredTicks / 100_000_000) * 100_000_000;
+  }
+  // For ranges over 1 million years
+  if (range > 1_000_000) {
+    return Math.ceil(range / desiredTicks / 1_000_000) * 1_000_000;
+  }
+  // For ranges over 1000 years
+  if (range > 1000) {
+    return Math.ceil(range / desiredTicks / 1000) * 1000;
+  }
+
+  return Math.ceil(range / desiredTicks);
+};
+
+// Update the Timeline component to use dynamic tick intervals
 export const Timeline = ({
   title = "",
   events = [],
-  tickInterval = 5,
+  tickInterval: providedTickInterval,
 }: TimelineProps) => {
-  const startYear = Math.min(...events.map((e) => e.year)) - 2 * tickInterval;
-  const endYear = Math.max(...events.map((e) => e.year)) + 2 * tickInterval;
+  const startYear = Math.min(...events.map((e) => e.year));
+  const endYear = Math.max(...events.map((e) => e.year));
+
+  // Calculate appropriate tick interval if not provided
+  const effectiveTickInterval =
+    providedTickInterval || calculateTickInterval(startYear, endYear);
+
   // Generate array of years for ticks
   const years = React.useMemo(() => {
     const years: number[] = [];
-    for (let year = startYear; year <= endYear; year += tickInterval) {
+    for (let year = startYear; year <= endYear; year += effectiveTickInterval) {
       years.push(year);
     }
     return years;
-  }, [startYear, endYear, tickInterval]);
+  }, [startYear, endYear, effectiveTickInterval]);
 
   // Calculate timeline width based on number of years
   const timelineWidth = (years.length - 1) * 100; // 100px per interval
@@ -82,6 +112,20 @@ export const Timeline = ({
     }
   };
 
+  const yearDisplay = (year: number) => {
+    const absYear = Math.abs(year);
+    const suffix = year < 0 ? " BCE" : " CE";
+
+    if (absYear >= 1_000_000_000) {
+      return `${(absYear / 1_000_000_000).toFixed(1)}B${suffix}`;
+    }
+    if (absYear >= 1_000_000) {
+      return `${(absYear / 1_000_000).toFixed(1)}M${suffix}`;
+    }
+
+    return `${absYear.toLocaleString()}${suffix}`;
+  };
+
   return (
     <div className="relative h-full">
       {title && <h2 className="text-lg mb-4">{title}</h2>}
@@ -110,9 +154,6 @@ export const Timeline = ({
                 const position =
                   ((year - startYear) / (endYear - startYear)) * 100;
 
-                const yearDisplay =
-                  year < 0 ? `${Math.abs(year)} BC` : `${year} AD`;
-
                 return (
                   <div
                     key={year}
@@ -121,7 +162,7 @@ export const Timeline = ({
                   >
                     <div className="h-2 w-0.5 bg-border mt-[-0.3rem]" />
                     <div className="mt-2 text-sm text-muted-foreground">
-                      {yearDisplay}
+                      {yearDisplay(year)}
                     </div>
                   </div>
                 );
@@ -150,8 +191,7 @@ export const Timeline = ({
               {" "}
               {/* Add padding to accommodate arrows */}
               <div className="text-sm font-medium mb-2">
-                {focusedEvent.label} ({Math.abs(focusedEvent.year)}
-                {focusedEvent.year < 0 ? " BC" : " AD"})
+                {focusedEvent.label} ({yearDisplay(focusedEvent.year)})
               </div>
               <div className="text-sm text-muted-foreground">
                 {focusedEvent.description}

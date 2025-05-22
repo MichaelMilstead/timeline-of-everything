@@ -84,7 +84,7 @@ export function TimelineSpace() {
         <Timeline
           title="History of the world"
           events={defaultHistoricalEvents}
-          tickInterval={100}
+          tickInterval={100000000}
         />
       )}
     </div>
