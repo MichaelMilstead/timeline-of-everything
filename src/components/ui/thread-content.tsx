@@ -124,17 +124,9 @@ const ThreadContentMessages = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { messages, isGenerating, variant } = useThreadContentContext();
 
-  // Find the index of the last user message
-  const lastUserMessageIndex = messages.findLastIndex(
-    (msg) => msg.role === "user"
-  );
-
   // If no user message found, show all messages
   // Otherwise, show all messages up to and including the last user message
-  const messagesToShow =
-    lastUserMessageIndex === -1
-      ? messages
-      : messages.slice(lastUserMessageIndex + 1);
+  const messagesToShow: TamboThreadMessage[] = [];
 
   return (
     <div
