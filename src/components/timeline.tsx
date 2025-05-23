@@ -8,6 +8,7 @@ export interface TimelineEvent {
 }
 
 export interface TimelineProps extends React.HTMLAttributes<HTMLDivElement> {
+  timelineOverview?: string;
   title?: string;
   events: TimelineEvent[];
   tickInterval?: number;
@@ -39,6 +40,7 @@ const calculateTickInterval = (
 
 // Update the Timeline component to use dynamic tick intervals
 export const Timeline = ({
+  timelineOverview = "",
   title = "",
   events = [],
   tickInterval: providedTickInterval = 10,
@@ -115,11 +117,6 @@ export const Timeline = ({
       setFocusedEvent(completeYearEvents[0]);
     }
   }, [completeYearEvents]);
-
-  // Add early return after hooks
-  if (!completeYearEvents.length) {
-    return null;
-  }
 
   const handleEventClick = (event: TimelineEvent) => {
     setFocusedEvent(
@@ -257,6 +254,11 @@ export const Timeline = ({
           </div>
         )}
       </div>
+      {timelineOverview && (
+        <div className="mt-4 text-sm text-foreground max-w-4xl mx-auto">
+          {timelineOverview}
+        </div>
+      )}
     </div>
   );
 };
