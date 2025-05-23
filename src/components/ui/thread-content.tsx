@@ -122,7 +122,7 @@ const ThreadContentMessages = React.forwardRef<
   HTMLDivElement,
   ThreadContentMessagesProps
 >(({ className, ...props }, ref) => {
-  const { messages, isGenerating, variant } = useThreadContentContext();
+  const { isGenerating, variant } = useThreadContentContext();
 
   // If no user message found, show all messages
   // Otherwise, show all messages up to and including the last user message
