@@ -5,6 +5,7 @@ import { useTamboThreadInput } from "@tambo-ai/react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ArrowUp } from "lucide-react";
 import * as React from "react";
+import { useEffect } from "react";
 
 /**
  * CSS variants for the message input container
@@ -116,6 +117,28 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
     const [displayValue, setDisplayValue] = React.useState("");
     const [submitError, setSubmitError] = React.useState<string | null>(null);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+    const initialLoadSubmit = async () => {
+      // Get the URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const presetMessage = urlParams.get("tambomessage");
+
+      if (presetMessage) {
+        setValue(presetMessage);
+        setDisplayValue("");
+        await submit({
+          contextKey,
+          streamResponse: true,
+        });
+        setValue("");
+      }
+    };
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        initialLoadSubmit();
+      }
+    }, []);
 
     React.useEffect(() => {
       setDisplayValue(value);
