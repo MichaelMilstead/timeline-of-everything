@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useTamboThread, useTamboThreadInput } from "@tambo-ai/react";
+import { useTamboThreadInput } from "@tambo-ai/react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ArrowUp } from "lucide-react";
 import * as React from "react";
@@ -114,7 +114,6 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
   ({ children, className, contextKey, variant, ...props }, ref) => {
     const { value, setValue, submit, isPending, error } =
       useTamboThreadInput(contextKey);
-    const { sendThreadMessage } = useTamboThread();
     const [displayValue, setDisplayValue] = React.useState("");
     const [submitError, setSubmitError] = React.useState<string | null>(null);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
