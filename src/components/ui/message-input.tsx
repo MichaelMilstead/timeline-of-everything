@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useTamboThreadInput } from "@tambo-ai/react";
+import { useTamboThread, useTamboThreadInput } from "@tambo-ai/react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ArrowUp } from "lucide-react";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * CSS variants for the message input container
@@ -114,25 +114,40 @@ const MessageInput = React.forwardRef<HTMLFormElement, MessageInputProps>(
   ({ children, className, contextKey, variant, ...props }, ref) => {
     const { value, setValue, submit, isPending, error } =
       useTamboThreadInput(contextKey);
+    const { sendThreadMessage } = useTamboThread();
     const [displayValue, setDisplayValue] = React.useState("");
     const [submitError, setSubmitError] = React.useState<string | null>(null);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     const initialLoadSubmit = async () => {
-      // Get the URL parameters
       const urlParams = new URLSearchParams(window.location.search);
       const presetMessage = urlParams.get("tambomessage");
 
       if (presetMessage) {
         setValue(presetMessage);
-        setDisplayValue("");
-        await submit({
+      }
+    };
+
+    // Add a ref to track if we've handled the initial submission
+    const initialSubmitHandled = useRef(false);
+
+    // Modified effect to only handle the initial preset message
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const presetMessage = urlParams.get("tambomessage");
+
+      if (
+        presetMessage &&
+        value === presetMessage &&
+        !initialSubmitHandled.current
+      ) {
+        initialSubmitHandled.current = true;
+        submit({
           contextKey,
           streamResponse: true,
         });
-        setValue("");
       }
-    };
+    }, [value, submit, contextKey]);
 
     useEffect(() => {
       if (typeof window !== "undefined") {
