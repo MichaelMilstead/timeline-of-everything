@@ -19,6 +19,7 @@ export default function Home() {
           <div className="flex-1 flex w-[90%] mx-auto flex-col items-center justify-center h-full">
             <TimelineSpace />
           </div>
+          hi
           <div className="w-full max-w-4xl mx-auto">
             <MessageThreadFull contextKey="tambo-template" />
           </div>

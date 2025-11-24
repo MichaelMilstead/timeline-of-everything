@@ -323,7 +323,7 @@ const MessageInputInternal = React.forwardRef<
       >
         <div
           className={cn(
-            "relative flex flex-col rounded-xl bg-[#161921] shadow-md p-2 px-3"
+            "relative flex flex-col rounded-xl bg-white shadow-md p-2 px-3"
           )}
         >
           {isDragging && (
@@ -417,7 +417,7 @@ const MessageInputTextarea = ({
       onKeyDown={handleKeyDown}
       onPaste={handlePaste}
       className={cn(
-        "flex-1 p-3 rounded-t-lg text-white resize-none text-sm min-h-[82px] max-h-[40vh] focus:outline-none placeholder:text-muted-foreground/50",
+        "flex-1 p-3 rounded-t-lg text-black resize-none text-sm min-h-[82px] max-h-[40vh] focus:outline-none placeholder:text-muted-foreground/50",
         className
       )}
       disabled={isPending || isUpdatingToken}
