@@ -1,4 +1,6 @@
 "use client";
+import LatestTamboMessage from "@/components/latest-tambo-message";
+import LatestUserMessage from "@/components/latest-user-message";
 import { TimelineSpace } from "@/components/timeline-space";
 import { MessageThreadFull } from "@/components/ui/message-thread-full";
 import { components } from "@/lib/tambo";
@@ -19,8 +21,12 @@ export default function Home() {
           <div className="flex-1 flex w-[90%] mx-auto flex-col items-center justify-center h-full">
             <TimelineSpace />
           </div>
-          hi
+
           <div className="w-full max-w-4xl mx-auto">
+            <div className="flex flex-col gap-2 mb-2">
+              <LatestTamboMessage />
+              <LatestUserMessage />
+            </div>
             <MessageThreadFull contextKey="tambo-template" />
           </div>
           <div className="text-sm text-muted-foreground">

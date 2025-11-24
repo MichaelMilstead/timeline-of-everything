@@ -8,7 +8,7 @@ export default function LatestUserMessage() {
     .find((message) => message.role === "user");
 
   return (
-    <div className="text-sm text-[#78BBE5] p-2 w-full text-left animate-fade-in">
+    <div className="text-sm text-black p-2 w-full text-left animate-fade-in font-semibold">
       {extractMessageContent(latestUserMessage)}
     </div>
   );

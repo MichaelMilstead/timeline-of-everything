@@ -198,3 +198,45 @@ body {
     color: hsl(var(--secondary));
   }
 }
+
+@keyframes flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgb(59 130 246 / 0.3);
+  }
+}
+
+.animate-flash {
+  animation: flash 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    border-color: rgb(59 130 246 / 0.5);
+  }
+  50% {
+    border-color: rgb(59 130 246 / 1);
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
